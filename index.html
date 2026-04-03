@@ -102,4 +102,77 @@
         {n:"ثوم مفصص (½ كيلو)", p:45}, {n:"طماطم", p:30}, {n:"بصل ابيض", p:17.5}, {n:"بصل احمر", p:20},
         {n:"بطاطس تحمير", p:20}, {n:"خيار", p:25}, {n:"جزر", p:25}, {n:"فلفل الوان", p:70},
         {n:"فلفل رومى", p:45}, {n:"فلفل حامى", p:40}, {n:"باذنجان رومى", p:35}, {n:"ليمون", p:40},
-        {n:"كوسة", p:30}, {n
+        {n:"كوسة", p:30}, {n:"كابوتشا", p:15}, {n:"بسلة مفصصة بالجزر", p:45}, {n:"شوربة خضار", p:35},
+        {n:"½باذنجان متقور للمحشى", p:45}, {n:"بصل اخضر", p:5}, {n:"حزمة خضرة", p:3}, {n:"حزمة جرجير", p:3},
+        {n:"حزمة نعناع", p:3}, {n:"طبق مشروم فريش", p:45}, {n:"باذنجان عروس", p:0}, {n:"½كوسة متقورة للمحشى", p:0},
+        {n:"سبانخ", p:0}, {n:"حزمة كرفس", p:0}, {n:"بنجر", p:0}
+    ];
+
+    const fruitData = [
+        {n:"تفاح احمر سكرى", p:75}, {n:"موز", p:35}, {n:"يوسفى موركت", p:25}, {n:"فراولة ممتازة", p:35},
+        {n:"كنتلوب عريش", p:35}, {n:"جوافة سكرى", p:30}, {n:"برتقال بصرة", p:25}, {n:"تفاح اصفر", p:0}
+    ];
+
+    let cart = {};
+    let total = 0;
+
+    function render(data, containerId) {
+        const container = document.getElementById(containerId);
+        data.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            let content = `<span class="item-name">${item.n}</span>`;
+            if(item.p > 0) {
+                content += `<span class="price">${item.p} ج</span>
+                            <div class="qty-box">
+                                <button class="qty-btn" onclick="upd('${item.n}',-1,${item.p})">-</button>
+                                <span id="q-${item.n}">0</span>
+                                <button class="qty-btn" onclick="upd('${item.n}',1,${item.p})">+</button>
+                            </div>`;
+            } else {
+                content += `<span class="unavailable">غير متوفر اليوم</span>`;
+            }
+            card.innerHTML = content;
+            container.appendChild(card);
+        });
+    }
+
+    render(vegData, 'veg-container');
+    render(fruitData, 'fruit-container');
+
+    function upd(name, delta, price) {
+        if (!cart[name]) cart[name] = { qty: 0, price: price };
+        cart[name].qty += delta;
+        if (cart[name].qty < 0) cart[name].qty = 0;
+        document.getElementById(`q-${name}`).innerText = cart[name].qty;
+        calcTotal();
+    }
+
+    function calcTotal() {
+        total = 0;
+        for (let k in cart) total += cart[k].qty * cart[k].price;
+        document.getElementById('total').innerText = total + " EGP";
+    }
+
+    function checkCart() {
+        if (total === 0) return alert("اختر أصنافاً أولاً!");
+        document.getElementById('orderModal').style.display = 'flex';
+    }
+
+    function sendOrder() {
+        const n = document.getElementById('cust-name').value;
+        const b = document.getElementById('cust-build').value;
+        const f = document.getElementById('cust-floor').value;
+        const s = document.getElementById('cust-flat').value;
+        const p = document.getElementById('cust-phone').value;
+        if(!n || !b || !f || !s) return alert("يرجى إكمال بيانات العنوان!");
+
+        let itemsMsg = "";
+        for (let k in cart) if (cart[k].qty > 0) itemsMsg += `%0A- ${k} (${cart[k].qty})`;
+
+        const message = `🍏 *طلب جديد - PROMNADE* 🍏%0A%0A📦 *الطلب:* ${itemsMsg}%0A%0A💵 *الإجمالي:* ${total} EGP%0A%0A👤 *العميل:* ${n}%0A🏠 *العنوان:* عمارة ${b} | دور ${f} | شقة ${s}%0A📞 *هاتف:* ${p}`;
+        window.open(`https://wa.me/201558124828?text=${message}`);
+    }
+</script>
+</body>
+    </html>
