@@ -3,120 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROMNADE CAFE | VIP Hyper</title>
+    <title>PROMNADE CAFE | تجربة الـ VIP</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #d4af37; --black: #080808; --card-bg: #151515; }
-        body { background-color: var(--black); color: white; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 50px; }
+        :root { --gold: #d4af37; --black: #080808; --card-bg: #151515; --gray: #888; }
+        body { background-color: var(--black); color: white; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 120px; }
         
-        #welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #222, #000); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
-        .logo-text { font-size: 3rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); margin-bottom: 30px; text-align: center; }
-        .enter-btn { padding: 12px 60px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-size: 1.3rem; font-weight: bold; cursor: pointer; border-radius: 50px; transition: 0.4s; }
-        .enter-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 30px var(--gold); }
+        /* شاشة الدخول VIP */
+        #welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #1a1a1a, #000); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+        .logo-box { font-size: 3rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); margin-bottom: 10px; text-align: center; }
+        .sub-logo { color: var(--gray); font-size: 1.1rem; margin-bottom: 30px; letter-spacing: 2px; }
+        .enter-btn { padding: 15px 70px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-size: 1.4rem; font-weight: bold; cursor: pointer; border-radius: 50px; transition: 0.5s; }
+        .enter-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 40px var(--gold); }
 
-        header { text-align: center; padding: 40px 20px; background: linear-gradient(to bottom, #1a1a1a, transparent); }
-        .section-title { border-right: 5px solid var(--gold); padding-right: 15px; margin: 30px 20px 15px; font-size: 1.4rem; color: var(--gold); font-weight: 900; }
+        header { text-align: center; padding: 50px 20px; background: linear-gradient(180deg, #111, transparent); }
+        .section-title { border-right: 5px solid var(--gold); padding-right: 15px; margin: 35px 20px 15px; font-size: 1.5rem; color: var(--gold); font-weight: 900; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; padding: 0 20px; }
-        .card { background: var(--card-bg); border-radius: 12px; padding: 12px; text-align: center; border: 1px solid #222; transition: 0.3s; }
-        .card:hover, .card.active { border-color: var(--gold); transform: translateY(-5px); background: #1a1a1a; box-shadow: 0 0 15px rgba(212,175,55,0.2); }
-        .card img { width: 45px; height: 45px; margin-bottom: 8px; border-radius: 5px; }
-        .price { color: var(--gold); display: block; font-weight: 900; margin-top: 5px; font-size: 1rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #222; }
+        .item-name { display: block; font-weight: bold; font-size: 1rem; margin-bottom: 5px; }
+        .price { color: var(--gold); display: block; font-weight: 900; font-size: 1.1rem; margin-bottom: 10px; }
 
-        .order-box { background: #111; margin: 25px 20px; padding: 25px; border-radius: 20px; border: 1px solid var(--gold); }
-        .address-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 15px; }
-        input { width: 100%; padding: 12px; margin: 5px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; font-family: 'Cairo'; box-sizing: border-box; outline: none; }
-        input:focus { border-color: var(--gold); }
-        
-        .send-btn { width: 100%; padding: 18px; background: var(--gold); border: none; border-radius: 10px; font-weight: 900; font-size: 1.3rem; cursor: pointer; color: black; margin-top: 15px; }
-        
-        footer { text-align: center; color: #444; padding: 30px; font-size: 0.8rem; }
+        /* التحكم في الكمية */
+        .qty-controls { display: flex; align-items: center; justify-content: center; gap: 10px; background: #000; border-radius: 8px; padding: 5px; }
+        .qty-btn { background: var(--gold); border: none; color: black; width: 25px; height: 25px; border-radius: 4px; font-weight: 900; cursor: pointer; }
+        .qty-val { font-weight: bold; min-width: 20px; }
+
+        /* بار الحساب السفلي */
+        .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; padding: 15px 25px; border-top: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-sizing: border-box; }
+        .total-amount { font-size: 1.5rem; font-weight: 900; color: var(--gold); }
+        .order-btn { background: var(--gold); color: black; padding: 12px 35px; border-radius: 8px; font-weight: 900; border: none; cursor: pointer; font-size: 1.2rem; }
+
+        /* نافذة العنوان */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #111; padding: 25px; border-radius: 20px; border: 1px solid var(--gold); width: 100%; max-width: 400px; box-sizing: border-box; }
+        input { width: 100%; padding: 14px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; font-family: 'Cairo'; box-sizing: border-box; outline: none; }
+        .address-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
     </style>
 </head>
 <body>
 
 <div id="welcome-screen">
-    <div class="logo-text">PROMNADE<br>CAFE</div>
-    <button class="enter-btn" onclick="document.getElementById('welcome-screen').style.display='none'">دخول الـ VIP 👑</button>
+    <div class="logo-box">PROMNADE CAFE</div>
+    <div class="sub-logo">PREMIUM EXPERIENCE</div>
+    <button class="enter-btn" onclick="document.getElementById('welcome-screen').style.display='none'">دخول المتجر</button>
 </div>
 
 <header>
-    <h1 style="color: var(--gold); margin:0; font-size: 2.2rem;">PROMNADE CAFE ☕</h1>
-    <p style="color: #888;">التميز في كل طلب | 01110552701</p>
+    <h1 style="color: var(--gold); margin:0; font-size: 2.2rem;">PROMNADE CAFE</h1>
+    <p style="color: var(--gray);">الجودة والرقي في منزلك</p>
 </header>
 
-<div class="section-title">🍎 الفواكه الطازجة (بالكيلو)</div>
+<div class="section-title">🥦 الخضروات الطازجة (بالكيلو)</div>
 <div class="grid">
-    <div class="card" onclick="selectItem(this, 'موز (1ك)')"><span>موز</span><span class="price">20ج</span></div>
-    <div class="card" onclick="selectItem(this, 'تفاح أمريكي (1ك)')"><span>تفاح</span><span class="price">65ج</span></div>
-    <div class="card" onclick="selectItem(this, 'برتقال (1ك)')"><span>برتقال</span><span class="price">15ج</span></div>
-    <div class="card" onclick="selectItem(this, 'فراولة (1ك)')"><span>فراولة</span><span class="price">25ج</span></div>
-    <div class="card" onclick="selectItem(this, 'جوافة (1ك)')"><span>جوافة</span><span class="price">20ج</span></div>
-</div>
-
-<div class="section-title">☕ ركن القهوة والشاي</div>
-<div class="grid">
-    <div class="card" onclick="selectItem(this, 'قهوة تركي (فنجان)')"><span>قهوة تركي</span><span class="price">35ج</span></div>
-    <div class="card" onclick="selectItem(this, 'علبة بن (ثمن)')"><span>بن (ثمن كيلو)</span><span class="price">85ج</span></div>
-    <div class="card" onclick="selectItem(this, 'شاي ليبتون (كوب)')"><span>كوب شاي</span><span class="price">15ج</span></div>
-    <div class="card" onclick="selectItem(this, 'باكو شاي (ربع)')"><span>باكو شاي</span><span class="price">55ج</span></div>
-</div>
-
-<div class="section-title">🥤 مشروبات غازية وعصائر فريش</div>
-<div class="grid">
-    <div class="card" onclick="selectItem(this, 'بيبسي/كولا (كانز)')"><span>بيبسي/كولا</span><span class="price">15ج</span></div>
-    <div class="card" onclick="selectItem(this, 'فيروز (كانز)')"><span>فيروز</span><span class="price">18ج</span></div>
-    <div class="card" onclick="selectItem(this, 'عصير مانجو فريش')"><span>مانجو فريش</span><span class="price">50ج</span></div>
-    <div class="card" onclick="selectItem(this, 'عصير برتقال فريش')"><span>برتقال فريش</span><span class="price">35ج</span></div>
-</div>
-
-<div class="section-title">🥦 الخضروات (بالكيلو)</div>
-<div class="grid">
-    <div class="card" onclick="selectItem(this, 'طماطم (1ك)')"><span>طماطم</span><span class="price">15ج</span></div>
-    <div class="card" onclick="selectItem(this, 'بطاطس (1ك)')"><span>بطاطس</span><span class="price">20ج</span></div>
-    <div class="card" onclick="selectItem(this, 'خيار (1ك)')"><span>خيار</span><span class="price">18ج</span></div>
-</div>
-
-<div class="order-box">
-    <h3 style="text-align:center; color:var(--gold); margin:0;">تفاصيل الطلب 🛵</h3>
-    <p id="sel-item" style="text-align:center; font-weight:bold; color:#00ff00; margin:10px 0;">لم يتم اختيار صنف</p>
-    
-    <input type="text" id="u-name" placeholder="اسمك بالكامل">
-    <div class="address-inputs">
-        <input type="number" id="u-build" placeholder="رقم العمارة">
-        <input type="number" id="u-floor" placeholder="الدور">
-        <input type="number" id="u-flat" placeholder="رقم الشقة">
+    <div class="card">
+        <span class="item-name">طماطم</span><span class="price">15ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('طماطم',-1,15)">-</button><span id="q-طماطم">0</span><button class="qty-btn" onclick="update('طماطم',1,15)">+</button></div>
     </div>
-    <input type="text" id="u-phone" placeholder="رقم الموبايل">
-
-    <button class="send-btn" onclick="orderNow()">إرسال الطلب للزعيم (واتساب) ✅</button>
+    <div class="card">
+        <span class="item-name">بطاطس</span><span class="price">20ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('بطاطس',-1,20)">-</button><span id="q-بطاطس">0</span><button class="qty-btn" onclick="update('بطاطس',1,20)">+</button></div>
+    </div>
+    <div class="card">
+        <span class="item-name">خيار</span><span class="price">18ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('خيار',-1,18)">-</button><span id="q-خيار">0</span><button class="qty-btn" onclick="update('خيار',1,18)">+</button></div>
+    </div>
 </div>
 
-<footer>&copy; 2026 PROMNADE CAFE | تجربة الـ VIP</footer>
+<div class="section-title">🍎 الفواكه الموسمية (بالكيلو)</div>
+<div class="grid">
+    <div class="card">
+        <span class="item-name">موز</span><span class="price">20ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('موز',-1,20)">-</button><span id="q-موز">0</span><button class="qty-btn" onclick="update('موز',1,20)">+</button></div>
+    </div>
+    <div class="card">
+        <span class="item-name">تفاح</span><span class="price">65ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('تفاح',-1,65)">-</button><span id="q-تفاح">0</span><button class="qty-btn" onclick="update('تفاح',1,65)">+</button></div>
+    </div>
+    <div class="card">
+        <span class="item-name">فراولة</span><span class="price">25ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('فراولة',-1,25)">-</button><span id="q-فراولة">0</span><button class="qty-btn" onclick="update('فراولة',1,25)">+</button></div>
+    </div>
+</div>
+
+<div class="section-title">🍿 الماركت والتسالي</div>
+<div class="grid">
+    <div class="card">
+        <span class="item-name">شيبسي عائلي</span><span class="price">20ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('شيبسي',-1,20)">-</button><span id="q-شيبسي">0</span><button class="qty-btn" onclick="update('شيبسي',1,20)">+</button></div>
+    </div>
+    <div class="card">
+        <span class="item-name">آيس كريم</span><span class="price">15ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('آيس كريم',-1,15)">-</button><span id="q-آيس كريم">0</span><button class="qty-btn" onclick="update('آيس كريم',1,15)">+</button></div>
+    </div>
+    <div class="card">
+        <span class="item-name">عصير معلب</span><span class="price">15ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('عصير معلب',-1,15)">-</button><span id="q-عصير معلب">0</span><button class="qty-btn" onclick="update('عصير معلب',1,15)">+</button></div>
+    </div>
+</div>
+
+<div class="section-title">☕ مشروبات الكافيه</div>
+<div class="grid">
+    <div class="card">
+        <span class="item-name">قهوة تركي</span><span class="price">35ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('قهوة تركي',-1,35)">-</button><span id="q-قهوة تركي">0</span><button class="qty-btn" onclick="update('قهوة تركي',1,35)">+</button></div>
+    </div>
+    <div class="card">
+        <span class="item-name">شاي</span><span class="price">15ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('شاي',-1,15)">-</button><span id="q-شاي">0</span><button class="qty-btn" onclick="update('شاي',1,15)">+</button></div>
+    </div>
+    <div class="card">
+        <span class="item-name">مانجو فريش</span><span class="price">50ج</span>
+        <div class="qty-controls"><button class="qty-btn" onclick="update('مانجو فريش',-1,50)">-</button><span id="q-مانجو فريش">0</span><button class="qty-btn" onclick="update('مانجو فريش',1,50)">+</button></div>
+    </div>
+</div>
+
+<div class="cart-bar">
+    <div>
+        <span style="font-size: 0.8rem; color: var(--gray);">إجمالي الفاتورة:</span><br>
+        <span class="total-amount" id="total">0 EGP</span>
+    </div>
+    <button class="order-btn" onclick="openOrder()">طلب الاوردر 📥</button>
+</div>
+
+<div class="modal" id="orderModal">
+    <div class="modal-content">
+        <h3 style="color:var(--gold); text-align:center; margin-top:0;">بيانات التوصيل 🛵</h3>
+        <input type="text" id="user-name" placeholder="الاسم بالكامل">
+        <div class="address-grid">
+            <input type="number" id="user-build" placeholder="عمارة">
+            <input type="number" id="user-floor" placeholder="دور">
+            <input type="number" id="user-flat" placeholder="شقة">
+        </div>
+        <input type="text" id="user-phone" placeholder="رقم الموبايل">
+        <button style="width:100%; background:var(--gold); color:black; padding:15px; border:none; border-radius:8px; font-weight:900; margin-top:10px; cursor:pointer;" onclick="sendToWA()">إرسال الطلب الآن ✅</button>
+        <button style="width:100%; background:none; color:red; border:none; margin-top:10px; cursor:pointer;" onclick="document.getElementById('orderModal').style.display='none'">إلغاء</button>
+    </div>
+</div>
 
 <script>
-    let item = "";
-    function selectItem(el, name) {
-        document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
-        item = name;
-        document.getElementById('sel-item').innerText = "✅ المطلوب: " + name;
+    let cart = {};
+    let total = 0;
+
+    function update(name, delta, price) {
+        if (!cart[name]) cart[name] = { qty: 0, price: price };
+        cart[name].qty += delta;
+        if (cart[name].qty < 0) cart[name].qty = 0;
+        document.getElementById(`q-${name}`).innerText = cart[name].qty;
+        calculate();
     }
 
-    function orderNow() {
-        const n = document.getElementById('u-name').value;
-        const b = document.getElementById('u-build').value;
-        const f = document.getElementById('u-floor').value;
-        const s = document.getElementById('u-flat').value;
-        const p = document.getElementById('u-phone').value;
+    function calculate() {
+        total = 0;
+        for (let item in cart) {
+            total += cart[item].qty * cart[item].price;
+        }
+        document.getElementById('total').innerText = total + " EGP";
+    }
+
+    function openOrder() {
+        if (total === 0) { alert("من فضلك اختر أصناف أولاً!"); return; }
+        document.getElementById('orderModal').style.display = 'flex';
+    }
+
+    function sendToWA() {
+        const n = document.getElementById('user-name').value;
+        const b = document.getElementById('user-build').value;
+        const f = document.getElementById('user-floor').value;
+        const s = document.getElementById('user-flat').value;
+        const p = document.getElementById('user-phone').value;
         const myNum = "201110552701";
 
-        if(!item || !n || !b || !f || !s) { alert("يا زعيم كمل بياناتك واختار طلبك!"); return; }
+        if(!n || !b || !f || !s) { alert("يرجى إكمال بيانات العنوان!"); return; }
 
-        const msg = `👑 *طلب جديد - PROMNADE CAFE* 👑%0A%0A🛒 *الطلب:* ${item}%0A👤 *العميل:* ${n}%0A📞 *الفون:* ${p}%0A%0A🏠 *العنوان بالتفصيل:*%0A🏢 عمارة: ${b} | الدور: ${f} | شقة: ${s}%0A----------------------%0A🛵 *برجاء التجهيز فوراً*`;
-        window.open(`https://wa.me/${myNum}?text=${msg}`, '_blank');
+        let itemsMsg = "";
+        for (let key in cart) {
+            if (cart[key].qty > 0) itemsMsg += `%0A- ${key} (${cart[key].qty})`;
+        }
+
+        const message = `✨ *طلب جديد - PROMNADE CAFE* ✨%0A%0A📦 *الأصناف:* ${itemsMsg}%0A%0A💵 *الإجمالي:* ${total} EGP%0A%0A👤 *العميل:* ${n}%0A🏠 *العنوان:* عمارة ${b} | دور ${f} | شقة ${s}%0A📞 *هاتف:* ${p}`;
+        window.open(`https://wa.me/${myNum}?text=${message}`, '_blank');
     }
 </script>
 
 </body>
-                                                                                                                   </html>
+    </html>
