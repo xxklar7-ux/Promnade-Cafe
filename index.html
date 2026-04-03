@@ -3,27 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROMNADE | خضروات وفواكه</title>
+    <title>PROMNADE | VIP Market & Cafe</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #d4af37; --black: #080808; --card-bg: #151515; --gray: #888; }
         body { background-color: var(--black); color: white; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 120px; }
+        
+        /* شاشة الترحيب */
         #welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #1a1a1a, #000); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
-        .logo-box { font-size: 2.5rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); text-align: center; line-height: 1.2; }
-        .enter-btn { padding: 15px 60px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-size: 1.3rem; font-weight: bold; cursor: pointer; border-radius: 50px; margin-top: 20px; }
-        header { text-align: center; padding: 40px 20px; background: linear-gradient(180deg, #111, transparent); }
-        .section-title { border-right: 5px solid var(--gold); padding-right: 15px; margin: 30px 20px 10px; font-size: 1.4rem; color: var(--gold); font-weight: 900; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; padding: 0 20px; }
-        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #222; }
-        .price { color: var(--gold); display: block; font-weight: 900; margin: 5px 0; }
-        .out-of-stock { color: #444 !important; font-size: 0.8rem; display: block; margin-top: 5px; }
-        .qty-controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; background: #000; border-radius: 5px; padding: 3px; }
-        .qty-btn { background: var(--gold); border: none; color: black; width: 25px; height: 25px; border-radius: 4px; cursor: pointer; font-weight: 900; }
+        .logo-box { font-size: 3rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); text-align: center; }
+        .enter-btn { padding: 15px 70px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-size: 1.4rem; font-weight: bold; cursor: pointer; border-radius: 50px; margin-top: 30px; transition: 0.3s; }
+        .enter-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 30px var(--gold); }
+
+        header { text-align: center; padding: 50px 20px; background: linear-gradient(180deg, #111, transparent); }
+        .section-title { border-right: 5px solid var(--gold); padding-right: 15px; margin: 35px 20px 15px; font-size: 1.5rem; color: var(--gold); font-weight: 900; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 12px; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #222; display: flex; flex-direction: column; justify-content: space-between; }
+        .item-name { font-weight: bold; font-size: 1rem; margin-bottom: 5px; }
+        .price { color: var(--gold); font-weight: 900; font-size: 1.2rem; margin-bottom: 10px; display: block; }
+        .unavailable { color: #444; font-size: 0.8rem; margin-top: 10px; }
+
+        /* التحكم في الكمية */
+        .qty-box { display: flex; align-items: center; justify-content: center; gap: 10px; background: #000; border-radius: 8px; padding: 5px; }
+        .qty-btn { background: var(--gold); border: none; color: black; width: 28px; height: 28px; border-radius: 5px; font-weight: 900; cursor: pointer; }
+        .qty-val { font-weight: bold; min-width: 20px; }
+
+        /* البار السفلي */
         .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; padding: 15px 25px; border-top: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-sizing: border-box; }
-        .order-btn { background: var(--gold); color: black; padding: 12px 30px; border-radius: 8px; font-weight: 900; border: none; font-size: 1.1rem; }
+        .total-amount { font-size: 1.6rem; font-weight: 900; color: var(--gold); }
+        .order-trigger { background: var(--gold); color: black; padding: 12px 35px; border-radius: 10px; font-weight: 900; border: none; cursor: pointer; font-size: 1.1rem; }
+
+        /* مودال البيانات */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: #111; padding: 25px; border-radius: 20px; border: 1px solid var(--gold); width: 100%; max-width: 400px; box-sizing: border-box; }
-        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; font-family: 'Cairo'; box-sizing: border-box; outline: none; }
+        input { width: 100%; padding: 14px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; font-family: 'Cairo'; outline: none; box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -34,54 +48,58 @@
 </div>
 
 <header>
-    <h1 style="color: var(--gold); margin:0;">PROMNADE CAFE</h1>
-    <p style="color: #888;">خضروات وفواكه طازجة يومياً 🥦🍎</p>
+    <h1 style="color: var(--gold); margin:0; font-size: 2.2rem;">PROMNADE</h1>
+    <p style="color: var(--gray);">خضروات وفواكه وكافيه - أسعار اليوم المحدثة</p>
 </header>
 
-<div class="section-title">🥦 الخضروات والأسعار</div>
+<div class="section-title">🥦 الخضروات الطازجة</div>
+<div class="grid" id="veg-container"></div>
+
+<div class="section-title">🍎 الفواكه الموسمية</div>
+<div class="grid" id="fruit-container"></div>
+
+<div class="section-title">☕ مشروبات الكافيه</div>
 <div class="grid">
-    <script>
-        const items = [
-            {n:"طماطم", p:30}, {n:"بصل ابيض", p:17.5}, {n:"بصل احمر", p:20}, {n:"بطاطس تحمير", p:20},
-            {n:"خيار", p:25}, {n:"جزر", p:25}, {n:"ثوم مفصص (½ كيلو)", p:45}, {n:"فلفل الوان", p:70},
-            {n:"فلفل رومى", p:45}, {n:"فلفل حامى", p:40}, {n:"باذنجان رومى", p:35}, {n:"ليمون", p:40},
-            {n:"كوسة", p:30}, {n:"كابوتشا", p:15}, {n:"بسلة مفصصة بالجزر", p:45}, {n:"شوربة خضار", p:35},
-            {n:"½باذنجان متقور للمحشى", p:45}, {n:"طبق مشروم فريش", p:45}, {n:"بصل اخضر", p:5},
-            {n:"حزمة خضرة", p:3}, {n:"حزمة جرجير", p:3}, {n:"حزمة نعناع", p:3},
-            {n:"تفاح احمر سكرى", p:75}, {n:"موز", p:35}, {n:"يوسفى موركت", p:25},
-            {n:"فراولة ممتازة", p:35}, {n:"كنتلوب عريش", p:35}, {n:"جوافة سكرى", p:30},
-            {n:"برتقال بصرة", p:25}, {n:"باذنجان عروس", p:0}, {n:"½كوسة متقورة", p:0}, {n:"سبانخ", p:0}
-        ];
-        items.forEach(i => {
-            document.write(`
-                <div class="card">
-                    <span>${i.n}</span>
-                    ${i.p > 0 ? `<span class="price">${i.p} ج</span>
-                    <div class="qty-controls">
-                        <button class="qty-btn" onclick="upd('${i.n}',-1,${i.p})">-</button>
-                        <span id="q-${i.n}">0</span>
-                        <button class="qty-btn" onclick="upd('${i.n}',1,${i.p})">+</button>
-                    </div>` : `<span class="out-of-stock">غير متوفر اليوم</span>`}
-                </div>
-            `);
-        });
-    </script>
+    <div class="card">
+        <span class="item-name">قهوة تركي</span><span class="price">35ج</span>
+        <div class="qty-box"><button class="qty-btn" onclick="upd('قهوة تركي',-1,35)">-</button><span id="q-قهوة تركي">0</span><button class="qty-btn" onclick="upd('قهوة تركي',1,35)">+</button></div>
+    </div>
+    <div class="card">
+        <span class="item-name">شاي</span><span class="price">15ج</span>
+        <div class="qty-box"><button class="qty-btn" onclick="upd('شاي',-1,15)">-</button><span id="q-شاي">0</span><button class="qty-btn" onclick="upd('شاي',1,15)">+</button></div>
+    </div>
+    <div class="card">
+        <span class="item-name">بيبسي كانز</span><span class="price">20ج</span>
+        <div class="qty-box"><button class="qty-btn" onclick="upd('بيبسي كانز',-1,20)">-</button><span id="q-بيبسي كانز">0</span><button class="qty-btn" onclick="upd('بيبسي كانز',1,20)">+</button></div>
+    </div>
 </div>
 
 <div class="cart-bar">
-    <div><span style="color:#888; font-size:0.8rem;">إجمالي الحساب:</span><br><span id="total" style="font-size:1.5rem; color:var(--gold); font-weight:900;">0 EGP</span></div>
-    <button class="order-btn" onclick="openM()">طلب الاوردر 📥</button>
+    <div>
+        <span style="font-size: 0.8rem; color: var(--gray);">إجمالي الفاتورة:</span><br>
+        <span class="total-amount" id="total">0 EGP</span>
+    </div>
+    <button class="order-trigger" onclick="checkCart()">طلب الاوردر 📥</button>
 </div>
 
-<div class="modal" id="m">
+<div class="modal" id="orderModal">
     <div class="modal-content">
-        <h3 style="color:var(--gold); text-align:center;">بيانات التوصيل 🛵</h3>
-        <input type="text" id="un" placeholder="الاسم بالكامل">
-        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:5px;">
-            <input type="number" id="ub" placeholder="عمارة">
-            <input type="number" id="uf" placeholder="دور">
-            <input type="number" id="us" placeholder="شقة">
+        <h3 style="color:var(--gold); text-align:center; margin-top:0;">بيانات التوصيل 🛵</h3>
+        <input type="text" id="cust-name" placeholder="الاسم بالكامل">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+            <input type="number" id="cust-build" placeholder="عمارة">
+            <input type="number" id="cust-floor" placeholder="دور">
+            <input type="number" id="cust-flat" placeholder="شقة">
         </div>
-        <input type="text" id="up" placeholder="رقم الموبايل">
-        <button style="width:100%; background:var(--gold); padding:15px; border:none; border-radius:8px; font-weight:900; margin-top:10px;" onclick="send()">إرسال الطلب ✅</button>
-        <button style="width:100
+        <input type="text" id="cust-phone" placeholder="رقم الموبايل">
+        <button style="width:100%; background:var(--gold); color:black; padding:16px; border:none; border-radius:10px; font-weight:900; margin-top:15px; cursor:pointer;" onclick="sendOrder()">تأكيد وإرسال واتساب ✅</button>
+        <button style="width:100%; background:none; color:red; border:none; margin-top:10px; cursor:pointer;" onclick="document.getElementById('orderModal').style.display='none'">إلغاء</button>
+    </div>
+</div>
+
+<script>
+    const vegData = [
+        {n:"ثوم مفصص (½ كيلو)", p:45}, {n:"طماطم", p:30}, {n:"بصل ابيض", p:17.5}, {n:"بصل احمر", p:20},
+        {n:"بطاطس تحمير", p:20}, {n:"خيار", p:25}, {n:"جزر", p:25}, {n:"فلفل الوان", p:70},
+        {n:"فلفل رومى", p:45}, {n:"فلفل حامى", p:40}, {n:"باذنجان رومى", p:35}, {n:"ليمون", p:40},
+        {n:"كوسة", p:30}, {n
