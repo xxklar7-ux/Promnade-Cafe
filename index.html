@@ -3,188 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROMNADE CAFE | تجربة الـ VIP</title>
+    <title>PROMNADE | خضروات وفواكه</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #d4af37; --black: #080808; --card-bg: #151515; --gray: #888; }
         body { background-color: var(--black); color: white; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 120px; }
-        
-        /* شاشة الدخول VIP */
         #welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #1a1a1a, #000); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
-        .logo-box { font-size: 3rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); margin-bottom: 10px; text-align: center; }
-        .sub-logo { color: var(--gray); font-size: 1.1rem; margin-bottom: 30px; letter-spacing: 2px; }
-        .enter-btn { padding: 15px 70px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-size: 1.4rem; font-weight: bold; cursor: pointer; border-radius: 50px; transition: 0.5s; }
-        .enter-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 40px var(--gold); }
-
-        header { text-align: center; padding: 50px 20px; background: linear-gradient(180deg, #111, transparent); }
-        .section-title { border-right: 5px solid var(--gold); padding-right: 15px; margin: 35px 20px 15px; font-size: 1.5rem; color: var(--gold); font-weight: 900; }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; padding: 0 20px; }
+        .logo-box { font-size: 2.5rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); text-align: center; line-height: 1.2; }
+        .enter-btn { padding: 15px 60px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-size: 1.3rem; font-weight: bold; cursor: pointer; border-radius: 50px; margin-top: 20px; }
+        header { text-align: center; padding: 40px 20px; background: linear-gradient(180deg, #111, transparent); }
+        .section-title { border-right: 5px solid var(--gold); padding-right: 15px; margin: 30px 20px 10px; font-size: 1.4rem; color: var(--gold); font-weight: 900; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; padding: 0 20px; }
         .card { background: var(--card-bg); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #222; }
-        .item-name { display: block; font-weight: bold; font-size: 1rem; margin-bottom: 5px; }
-        .price { color: var(--gold); display: block; font-weight: 900; font-size: 1.1rem; margin-bottom: 10px; }
-
-        /* التحكم في الكمية */
-        .qty-controls { display: flex; align-items: center; justify-content: center; gap: 10px; background: #000; border-radius: 8px; padding: 5px; }
-        .qty-btn { background: var(--gold); border: none; color: black; width: 25px; height: 25px; border-radius: 4px; font-weight: 900; cursor: pointer; }
-        .qty-val { font-weight: bold; min-width: 20px; }
-
-        /* بار الحساب السفلي */
+        .price { color: var(--gold); display: block; font-weight: 900; margin: 5px 0; }
+        .out-of-stock { color: #444 !important; font-size: 0.8rem; display: block; margin-top: 5px; }
+        .qty-controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; background: #000; border-radius: 5px; padding: 3px; }
+        .qty-btn { background: var(--gold); border: none; color: black; width: 25px; height: 25px; border-radius: 4px; cursor: pointer; font-weight: 900; }
         .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; padding: 15px 25px; border-top: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-sizing: border-box; }
-        .total-amount { font-size: 1.5rem; font-weight: 900; color: var(--gold); }
-        .order-btn { background: var(--gold); color: black; padding: 12px 35px; border-radius: 8px; font-weight: 900; border: none; cursor: pointer; font-size: 1.2rem; }
-
-        /* نافذة العنوان */
+        .order-btn { background: var(--gold); color: black; padding: 12px 30px; border-radius: 8px; font-weight: 900; border: none; font-size: 1.1rem; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: #111; padding: 25px; border-radius: 20px; border: 1px solid var(--gold); width: 100%; max-width: 400px; box-sizing: border-box; }
-        input { width: 100%; padding: 14px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; font-family: 'Cairo'; box-sizing: border-box; outline: none; }
-        .address-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; font-family: 'Cairo'; box-sizing: border-box; outline: none; }
     </style>
 </head>
 <body>
 
 <div id="welcome-screen">
-    <div class="logo-box">PROMNADE CAFE</div>
-    <div class="sub-logo">PREMIUM EXPERIENCE</div>
+    <div class="logo-box">PROMNADE<br>CAFE & MARKET</div>
     <button class="enter-btn" onclick="document.getElementById('welcome-screen').style.display='none'">دخول المتجر</button>
 </div>
 
 <header>
-    <h1 style="color: var(--gold); margin:0; font-size: 2.2rem;">PROMNADE CAFE</h1>
-    <p style="color: var(--gray);">الجودة والرقي في منزلك</p>
+    <h1 style="color: var(--gold); margin:0;">PROMNADE CAFE</h1>
+    <p style="color: #888;">خضروات وفواكه طازجة يومياً 🥦🍎</p>
 </header>
 
-<div class="section-title">🥦 الخضروات الطازجة (بالكيلو)</div>
+<div class="section-title">🥦 الخضروات والأسعار</div>
 <div class="grid">
-    <div class="card">
-        <span class="item-name">طماطم</span><span class="price">15ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('طماطم',-1,15)">-</button><span id="q-طماطم">0</span><button class="qty-btn" onclick="update('طماطم',1,15)">+</button></div>
-    </div>
-    <div class="card">
-        <span class="item-name">بطاطس</span><span class="price">20ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('بطاطس',-1,20)">-</button><span id="q-بطاطس">0</span><button class="qty-btn" onclick="update('بطاطس',1,20)">+</button></div>
-    </div>
-    <div class="card">
-        <span class="item-name">خيار</span><span class="price">18ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('خيار',-1,18)">-</button><span id="q-خيار">0</span><button class="qty-btn" onclick="update('خيار',1,18)">+</button></div>
-    </div>
-</div>
-
-<div class="section-title">🍎 الفواكه الموسمية (بالكيلو)</div>
-<div class="grid">
-    <div class="card">
-        <span class="item-name">موز</span><span class="price">20ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('موز',-1,20)">-</button><span id="q-موز">0</span><button class="qty-btn" onclick="update('موز',1,20)">+</button></div>
-    </div>
-    <div class="card">
-        <span class="item-name">تفاح</span><span class="price">65ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('تفاح',-1,65)">-</button><span id="q-تفاح">0</span><button class="qty-btn" onclick="update('تفاح',1,65)">+</button></div>
-    </div>
-    <div class="card">
-        <span class="item-name">فراولة</span><span class="price">25ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('فراولة',-1,25)">-</button><span id="q-فراولة">0</span><button class="qty-btn" onclick="update('فراولة',1,25)">+</button></div>
-    </div>
-</div>
-
-<div class="section-title">🍿 الماركت والتسالي</div>
-<div class="grid">
-    <div class="card">
-        <span class="item-name">شيبسي عائلي</span><span class="price">20ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('شيبسي',-1,20)">-</button><span id="q-شيبسي">0</span><button class="qty-btn" onclick="update('شيبسي',1,20)">+</button></div>
-    </div>
-    <div class="card">
-        <span class="item-name">آيس كريم</span><span class="price">15ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('آيس كريم',-1,15)">-</button><span id="q-آيس كريم">0</span><button class="qty-btn" onclick="update('آيس كريم',1,15)">+</button></div>
-    </div>
-    <div class="card">
-        <span class="item-name">عصير معلب</span><span class="price">15ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('عصير معلب',-1,15)">-</button><span id="q-عصير معلب">0</span><button class="qty-btn" onclick="update('عصير معلب',1,15)">+</button></div>
-    </div>
-</div>
-
-<div class="section-title">☕ مشروبات الكافيه</div>
-<div class="grid">
-    <div class="card">
-        <span class="item-name">قهوة تركي</span><span class="price">35ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('قهوة تركي',-1,35)">-</button><span id="q-قهوة تركي">0</span><button class="qty-btn" onclick="update('قهوة تركي',1,35)">+</button></div>
-    </div>
-    <div class="card">
-        <span class="item-name">شاي</span><span class="price">15ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('شاي',-1,15)">-</button><span id="q-شاي">0</span><button class="qty-btn" onclick="update('شاي',1,15)">+</button></div>
-    </div>
-    <div class="card">
-        <span class="item-name">مانجو فريش</span><span class="price">50ج</span>
-        <div class="qty-controls"><button class="qty-btn" onclick="update('مانجو فريش',-1,50)">-</button><span id="q-مانجو فريش">0</span><button class="qty-btn" onclick="update('مانجو فريش',1,50)">+</button></div>
-    </div>
+    <script>
+        const items = [
+            {n:"طماطم", p:30}, {n:"بصل ابيض", p:17.5}, {n:"بصل احمر", p:20}, {n:"بطاطس تحمير", p:20},
+            {n:"خيار", p:25}, {n:"جزر", p:25}, {n:"ثوم مفصص (½ كيلو)", p:45}, {n:"فلفل الوان", p:70},
+            {n:"فلفل رومى", p:45}, {n:"فلفل حامى", p:40}, {n:"باذنجان رومى", p:35}, {n:"ليمون", p:40},
+            {n:"كوسة", p:30}, {n:"كابوتشا", p:15}, {n:"بسلة مفصصة بالجزر", p:45}, {n:"شوربة خضار", p:35},
+            {n:"½باذنجان متقور للمحشى", p:45}, {n:"طبق مشروم فريش", p:45}, {n:"بصل اخضر", p:5},
+            {n:"حزمة خضرة", p:3}, {n:"حزمة جرجير", p:3}, {n:"حزمة نعناع", p:3},
+            {n:"تفاح احمر سكرى", p:75}, {n:"موز", p:35}, {n:"يوسفى موركت", p:25},
+            {n:"فراولة ممتازة", p:35}, {n:"كنتلوب عريش", p:35}, {n:"جوافة سكرى", p:30},
+            {n:"برتقال بصرة", p:25}, {n:"باذنجان عروس", p:0}, {n:"½كوسة متقورة", p:0}, {n:"سبانخ", p:0}
+        ];
+        items.forEach(i => {
+            document.write(`
+                <div class="card">
+                    <span>${i.n}</span>
+                    ${i.p > 0 ? `<span class="price">${i.p} ج</span>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="upd('${i.n}',-1,${i.p})">-</button>
+                        <span id="q-${i.n}">0</span>
+                        <button class="qty-btn" onclick="upd('${i.n}',1,${i.p})">+</button>
+                    </div>` : `<span class="out-of-stock">غير متوفر اليوم</span>`}
+                </div>
+            `);
+        });
+    </script>
 </div>
 
 <div class="cart-bar">
-    <div>
-        <span style="font-size: 0.8rem; color: var(--gray);">إجمالي الفاتورة:</span><br>
-        <span class="total-amount" id="total">0 EGP</span>
-    </div>
-    <button class="order-btn" onclick="openOrder()">طلب الاوردر 📥</button>
+    <div><span style="color:#888; font-size:0.8rem;">إجمالي الحساب:</span><br><span id="total" style="font-size:1.5rem; color:var(--gold); font-weight:900;">0 EGP</span></div>
+    <button class="order-btn" onclick="openM()">طلب الاوردر 📥</button>
 </div>
 
-<div class="modal" id="orderModal">
+<div class="modal" id="m">
     <div class="modal-content">
-        <h3 style="color:var(--gold); text-align:center; margin-top:0;">بيانات التوصيل 🛵</h3>
-        <input type="text" id="user-name" placeholder="الاسم بالكامل">
-        <div class="address-grid">
-            <input type="number" id="user-build" placeholder="عمارة">
-            <input type="number" id="user-floor" placeholder="دور">
-            <input type="number" id="user-flat" placeholder="شقة">
+        <h3 style="color:var(--gold); text-align:center;">بيانات التوصيل 🛵</h3>
+        <input type="text" id="un" placeholder="الاسم بالكامل">
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:5px;">
+            <input type="number" id="ub" placeholder="عمارة">
+            <input type="number" id="uf" placeholder="دور">
+            <input type="number" id="us" placeholder="شقة">
         </div>
-        <input type="text" id="user-phone" placeholder="رقم الموبايل">
-        <button style="width:100%; background:var(--gold); color:black; padding:15px; border:none; border-radius:8px; font-weight:900; margin-top:10px; cursor:pointer;" onclick="sendToWA()">إرسال الطلب الآن ✅</button>
-        <button style="width:100%; background:none; color:red; border:none; margin-top:10px; cursor:pointer;" onclick="document.getElementById('orderModal').style.display='none'">إلغاء</button>
-    </div>
-</div>
-
-<script>
-    let cart = {};
-    let total = 0;
-
-    function update(name, delta, price) {
-        if (!cart[name]) cart[name] = { qty: 0, price: price };
-        cart[name].qty += delta;
-        if (cart[name].qty < 0) cart[name].qty = 0;
-        document.getElementById(`q-${name}`).innerText = cart[name].qty;
-        calculate();
-    }
-
-    function calculate() {
-        total = 0;
-        for (let item in cart) {
-            total += cart[item].qty * cart[item].price;
-        }
-        document.getElementById('total').innerText = total + " EGP";
-    }
-
-    function openOrder() {
-        if (total === 0) { alert("من فضلك اختر أصناف أولاً!"); return; }
-        document.getElementById('orderModal').style.display = 'flex';
-    }
-
-    function sendToWA() {
-        const n = document.getElementById('user-name').value;
-        const b = document.getElementById('user-build').value;
-        const f = document.getElementById('user-floor').value;
-        const s = document.getElementById('user-flat').value;
-        const p = document.getElementById('user-phone').value;
-        const myNum = "201110552701";
-
-        if(!n || !b || !f || !s) { alert("يرجى إكمال بيانات العنوان!"); return; }
-
-        let itemsMsg = "";
-        for (let key in cart) {
-            if (cart[key].qty > 0) itemsMsg += `%0A- ${key} (${cart[key].qty})`;
-        }
-
-        const message = `✨ *طلب جديد - PROMNADE CAFE* ✨%0A%0A📦 *الأصناف:* ${itemsMsg}%0A%0A💵 *الإجمالي:* ${total} EGP%0A%0A👤 *العميل:* ${n}%0A🏠 *العنوان:* عمارة ${b} | دور ${f} | شقة ${s}%0A📞 *هاتف:* ${p}`;
-        window.open(`https://wa.me/${myNum}?text=${message}`, '_blank');
-    }
-</script>
-
-</body>
-    </html>
+        <input type="text" id="up" placeholder="رقم الموبايل">
+        <button style="width:100%; background:var(--gold); padding:15px; border:none; border-radius:8px; font-weight:900; margin-top:10px;" onclick="send()">إرسال الطلب ✅</button>
+        <button style="width:100
