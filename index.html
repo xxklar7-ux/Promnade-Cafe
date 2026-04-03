@@ -3,176 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROMNADE | VIP Market & Cafe</title>
+    <title>PROMNADE CAFE | VIP Market</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #d4af37; --black: #080808; --card-bg: #151515; --gray: #888; }
         body { background-color: var(--black); color: white; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 120px; }
         
-        /* شاشة الترحيب */
+        /* شاشة دخول VIP */
         #welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #1a1a1a, #000); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
-        .logo-box { font-size: 3rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); text-align: center; }
-        .enter-btn { padding: 15px 70px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-size: 1.4rem; font-weight: bold; cursor: pointer; border-radius: 50px; margin-top: 30px; transition: 0.3s; }
-        .enter-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 30px var(--gold); }
+        .logo-box { font-size: 3rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); text-align: center; line-height: 1.2; }
+        .enter-btn { padding: 15px 70px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-size: 1.4rem; font-weight: bold; cursor: pointer; border-radius: 50px; margin-top: 30px; transition: 0.5s; }
+        .enter-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 40px var(--gold); }
 
         header { text-align: center; padding: 50px 20px; background: linear-gradient(180deg, #111, transparent); }
         .section-title { border-right: 5px solid var(--gold); padding-right: 15px; margin: 35px 20px 15px; font-size: 1.5rem; color: var(--gold); font-weight: 900; }
         
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 12px; padding: 0 20px; }
-        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #222; display: flex; flex-direction: column; justify-content: space-between; }
-        .item-name { font-weight: bold; font-size: 1rem; margin-bottom: 5px; }
+        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #222; display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; }
+        .item-name { font-weight: bold; font-size: 1rem; margin-bottom: 5px; height: 45px; display: flex; align-items: center; justify-content: center; }
         .price { color: var(--gold); font-weight: 900; font-size: 1.2rem; margin-bottom: 10px; display: block; }
-        .unavailable { color: #444; font-size: 0.8rem; margin-top: 10px; }
+        .unavailable { color: #444; font-size: 0.8rem; margin-top: 10px; font-weight: bold; }
 
-        /* التحكم في الكمية */
+        /* أزرار الكمية */
         .qty-box { display: flex; align-items: center; justify-content: center; gap: 10px; background: #000; border-radius: 8px; padding: 5px; }
         .qty-btn { background: var(--gold); border: none; color: black; width: 28px; height: 28px; border-radius: 5px; font-weight: 900; cursor: pointer; }
         .qty-val { font-weight: bold; min-width: 20px; }
 
-        /* البار السفلي */
-        .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; padding: 15px 25px; border-top: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-sizing: border-box; }
+        /* بار الحساب السفلي */
+        .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; padding: 15px 25px; border-top: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-sizing: border-box; box-shadow: 0 -10px 20px rgba(0,0,0,0.5); }
         .total-amount { font-size: 1.6rem; font-weight: 900; color: var(--gold); }
         .order-trigger { background: var(--gold); color: black; padding: 12px 35px; border-radius: 10px; font-weight: 900; border: none; cursor: pointer; font-size: 1.1rem; }
 
-        /* مودال البيانات */
+        /* نافذة بيانات العنوان */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: #111; padding: 25px; border-radius: 20px; border: 1px solid var(--gold); width: 100%; max-width: 400px; box-sizing: border-box; }
         input { width: 100%; padding: 14px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; font-family: 'Cairo'; outline: none; box-sizing: border-box; }
+        input:focus { border-color: var(--gold); }
     </style>
 </head>
 <body>
 
 <div id="welcome-screen">
-    <div class="logo-box">PROMNADE<br>CAFE & MARKET</div>
+    <div class="logo-box">PROMNADE CAFE<br><span style="font-size: 1.5rem; letter-spacing: 5px;">MARKET</span></div>
     <button class="enter-btn" onclick="document.getElementById('welcome-screen').style.display='none'">دخول المتجر</button>
 </div>
 
 <header>
     <h1 style="color: var(--gold); margin:0; font-size: 2.2rem;">PROMNADE</h1>
-    <p style="color: var(--gray);">خضروات وفواكه وكافيه - أسعار اليوم المحدثة</p>
+    <p style="color: var(--gray);">خضروات وفواكه ومنتجات غذائية طازجة</p>
 </header>
 
-<div class="section-title">🥦 الخضروات الطازجة</div>
-<div class="grid" id="veg-container"></div>
+<div class="section-title">🥦 الخضروات (أسعار اليوم)</div>
+<div class="grid" id="veg-grid"></div>
 
-<div class="section-title">🍎 الفواكه الموسمية</div>
-<div class="grid" id="fruit-container"></div>
+<div class="section-title">🍎 الفاكهة (أسعار اليوم)</div>
+<div class="grid" id="fruit-grid"></div>
 
-<div class="section-title">☕ مشروبات الكافيه</div>
-<div class="grid">
-    <div class="card">
-        <span class="item-name">قهوة تركي</span><span class="price">35ج</span>
-        <div class="qty-box"><button class="qty-btn" onclick="upd('قهوة تركي',-1,35)">-</button><span id="q-قهوة تركي">0</span><button class="qty-btn" onclick="upd('قهوة تركي',1,35)">+</button></div>
-    </div>
-    <div class="card">
-        <span class="item-name">شاي</span><span class="price">15ج</span>
-        <div class="qty-box"><button class="qty-btn" onclick="upd('شاي',-1,15)">-</button><span id="q-شاي">0</span><button class="qty-btn" onclick="upd('شاي',1,15)">+</button></div>
-    </div>
-    <div class="card">
-        <span class="item-name">بيبسي كانز</span><span class="price">20ج</span>
-        <div class="qty-box"><button class="qty-btn" onclick="upd('بيبسي كانز',-1,20)">-</button><span id="q-بيبسي كانز">0</span><button class="qty-btn" onclick="upd('بيبسي كانز',1,20)">+</button></div>
-    </div>
-</div>
+<div class="section-title">🥤 الماركت والكافيه</div>
+<div class="grid" id="market-grid"></div>
 
 <div class="cart-bar">
     <div>
         <span style="font-size: 0.8rem; color: var(--gray);">إجمالي الفاتورة:</span><br>
-        <span class="total-amount" id="total">0 EGP</span>
+        <span class="total-amount" id="total-val">0 EGP</span>
     </div>
-    <button class="order-trigger" onclick="checkCart()">طلب الاوردر 📥</button>
+    <button class="order-trigger" onclick="openOrderModal()">طلب الاوردر 📥</button>
 </div>
 
 <div class="modal" id="orderModal">
     <div class="modal-content">
-        <h3 style="color:var(--gold); text-align:center; margin-top:0;">بيانات التوصيل 🛵</h3>
+        <h3 style="color:var(--gold); text-align:center; margin-top:0;">تفاصيل التوصيل 🛵</h3>
         <input type="text" id="cust-name" placeholder="الاسم بالكامل">
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
-            <input type="number" id="cust-build" placeholder="عمارة">
-            <input type="number" id="cust-floor" placeholder="دور">
-            <input type="number" id="cust-flat" placeholder="شقة">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+            <input type="number" id="cust-build" placeholder="العمارة">
+            <input type="number" id="cust-floor" placeholder="الدور">
+            <input type="number" id="cust-flat" placeholder="الشقة">
         </div>
         <input type="text" id="cust-phone" placeholder="رقم الموبايل">
-        <button style="width:100%; background:var(--gold); color:black; padding:16px; border:none; border-radius:10px; font-weight:900; margin-top:15px; cursor:pointer;" onclick="sendOrder()">تأكيد وإرسال واتساب ✅</button>
+        <button style="width:100%; background:var(--gold); color:black; padding:16px; border:none; border-radius:10px; font-weight:900; margin-top:15px; cursor:pointer; font-size: 1.2rem;" onclick="sendToWhatsApp()">إرسال الطلب واتساب ✅</button>
         <button style="width:100%; background:none; color:red; border:none; margin-top:10px; cursor:pointer;" onclick="document.getElementById('orderModal').style.display='none'">إلغاء</button>
     </div>
 </div>
 
 <script>
-    const vegData = [
-        {n:"ثوم مفصص (½ كيلو)", p:45}, {n:"طماطم", p:30}, {n:"بصل ابيض", p:17.5}, {n:"بصل احمر", p:20},
-        {n:"بطاطس تحمير", p:20}, {n:"خيار", p:25}, {n:"جزر", p:25}, {n:"فلفل الوان", p:70},
-        {n:"فلفل رومى", p:45}, {n:"فلفل حامى", p:40}, {n:"باذنجان رومى", p:35}, {n:"ليمون", p:40},
-        {n:"كوسة", p:30}, {n:"كابوتشا", p:15}, {n:"بسلة مفصصة بالجزر", p:45}, {n:"شوربة خضار", p:35},
-        {n:"½باذنجان متقور للمحشى", p:45}, {n:"بصل اخضر", p:5}, {n:"حزمة خضرة", p:3}, {n:"حزمة جرجير", p:3},
-        {n:"حزمة نعناع", p:3}, {n:"طبق مشروم فريش", p:45}, {n:"باذنجان عروس", p:0}, {n:"½كوسة متقورة للمحشى", p:0},
-        {n:"سبانخ", p:0}, {n:"حزمة كرفس", p:0}, {n:"بنجر", p:0}
+    // البيانات
+    const vegetables = [
+        {name:"ثوم مفصص (½ كيلو)", price:45}, {name:"طماطم", price:30}, {name:"بصل ابيض", price:17.5}, 
+        {name:"بصل احمر", price:20}, {name:"بطاطس تحمير", price:20}, {name:"خيار", price:25}, 
+        {name:"جزر", price:25}, {name:"فلفل الوان", price:70}, {name:"فلفل رومى", price:45}, 
+        {name:"فلفل حامى", price:40}, {name:"باذنجان رومى", price:35}, {name:"ليمون", price:40}, 
+        {name:"كوسة", price:30}, {name:"كابوتشا", price:15}, {name:"بسلة مفصصة بالجزر", price:45}, 
+        {name:"شوربة خضار", price:35}, {name:"½ باذنجان متقور للمحشى", price:45}, {name:"حزمة خضرة", price:3}, 
+        {name:"حزمة جرجير", price:3}, {name:"حزمة نعناع", price:3}, {name:"بصل اخضر", price:5}, 
+        {name:"طبق مشروم فريش", price:45}, {name:"باذنجان عروس", price:0}, {name:"½ كوسة متقورة للمحشى", price:0},
+        {name:"سبانخ", price:0}, {name:"حزمة كرفس", price:0}, {name:"بنجر", price:0}
     ];
 
-    const fruitData = [
-        {n:"تفاح احمر سكرى", p:75}, {n:"موز", p:35}, {n:"يوسفى موركت", p:25}, {n:"فراولة ممتازة", p:35},
-        {n:"كنتلوب عريش", p:35}, {n:"جوافة سكرى", p:30}, {n:"برتقال بصرة", p:25}, {n:"تفاح اصفر", p:0}
+    const fruits = [
+        {name:"تفاح احمر سكرى", price:75}, {name:"موز", price:35}, {name:"يوسفى موركت", price:25}, 
+        {name:"فراولة ممتازة", price:35}, {name:"كنتلوب عريش", price:35}, {name:"جوافة سكرى", price:30}, 
+        {name:"برتقال بصرة", price:25}, {name:"تفاح اصفر", price:0}
+    ];
+
+    const marketCafe = [
+        {name:"قهوة تركي", price:35}, {name:"شاي عراقي", price:15}, {name:"بيبسي / كولا", price:20}, 
+        {name:"شيبسي عائلي", price:15}, {name:"ايس كريم", price:20}, {name:"عصير طازج", price:45}
     ];
 
     let cart = {};
     let total = 0;
 
-    function render(data, containerId) {
+    function renderItems(items, containerId) {
         const container = document.getElementById(containerId);
-        data.forEach(item => {
+        items.forEach(item => {
             const card = document.createElement('div');
             card.className = 'card';
-            let content = `<span class="item-name">${item.n}</span>`;
-            if(item.p > 0) {
-                content += `<span class="price">${item.p} ج</span>
-                            <div class="qty-box">
-                                <button class="qty-btn" onclick="upd('${item.n}',-1,${item.p})">-</button>
-                                <span id="q-${item.n}">0</span>
-                                <button class="qty-btn" onclick="upd('${item.n}',1,${item.p})">+</button>
-                            </div>`;
+            let content = `<span class="item-name">${item.name}</span>`;
+            
+            if(item.price > 0) {
+                content += `
+                    <span class="price">${item.price} ج</span>
+                    <div class="qty-box">
+                        <button class="qty-btn" onclick="updateQty('${item.name}', -1, ${item.price})">-</button>
+                        <span id="q-${item.name}">0</span>
+                        <button class="qty-btn" onclick="updateQty('${item.name}', 1, ${item.price})">+</button>
+                    </div>`;
             } else {
                 content += `<span class="unavailable">غير متوفر اليوم</span>`;
             }
+            
             card.innerHTML = content;
             container.appendChild(card);
         });
     }
 
-    render(vegData, 'veg-container');
-    render(fruitData, 'fruit-container');
+    // تشغيل العرض
+    renderItems(vegetables, 'veg-grid');
+    renderItems(fruits, 'fruit-grid');
+    renderItems(marketCafe, 'market-grid');
 
-    function upd(name, delta, price) {
-        if (!cart[name]) cart[name] = { qty: 0, price: price };
+    function updateQty(name, delta, price) {
+        if(!cart[name]) cart[name] = {qty: 0, price: price};
         cart[name].qty += delta;
-        if (cart[name].qty < 0) cart[name].qty = 0;
+        if(cart[name].qty < 0) cart[name].qty = 0;
+        
         document.getElementById(`q-${name}`).innerText = cart[name].qty;
-        calcTotal();
+        calculateTotal();
     }
 
-    function calcTotal() {
+    function calculateTotal() {
         total = 0;
-        for (let k in cart) total += cart[k].qty * cart[k].price;
-        document.getElementById('total').innerText = total + " EGP";
+        for(let key in cart) {
+            total += cart[key].qty * cart[key].price;
+        }
+        document.getElementById('total-val').innerText = total + " EGP";
     }
 
-    function checkCart() {
-        if (total === 0) return alert("اختر أصنافاً أولاً!");
+    function openOrderModal() {
+        if(total === 0) return alert("سلتك فارغة! اختر بعض الأصناف أولاً.");
         document.getElementById('orderModal').style.display = 'flex';
     }
 
-    function sendOrder() {
-        const n = document.getElementById('cust-name').value;
-        const b = document.getElementById('cust-build').value;
-        const f = document.getElementById('cust-floor').value;
-        const s = document.getElementById('cust-flat').value;
-        const p = document.getElementById('cust-phone').value;
-        if(!n || !b || !f || !s) return alert("يرجى إكمال بيانات العنوان!");
+    function sendToWhatsApp() {
+        const name = document.getElementById('cust-name').value;
+        const build = document.getElementById('cust-build').value;
+        const floor = document.getElementById('cust-floor').value;
+        const flat = document.getElementById('cust-flat').value;
+        const phone = document.getElementById('cust-phone').value;
 
-        let itemsMsg = "";
-        for (let k in cart) if (cart[k].qty > 0) itemsMsg += `%0A- ${k} (${cart[k].qty})`;
+        if(!name || !build || !floor || !flat) return alert("يرجى إكمال بيانات العنوان!");
 
-        const message = `🍏 *طلب جديد - PROMNADE* 🍏%0A%0A📦 *الطلب:* ${itemsMsg}%0A%0A💵 *الإجمالي:* ${total} EGP%0A%0A👤 *العميل:* ${n}%0A🏠 *العنوان:* عمارة ${b} | دور ${f} | شقة ${s}%0A📞 *هاتف:* ${p}`;
-        window.open(`https://wa.me/201558124828?text=${message}`);
+        let itemsList = "";
+        for(let key in cart) {
+            if(cart[key].qty > 0) {
+                itemsList += `%0A- ${key} (الكمية: ${cart[key].qty})`;
+            }
+        }
+
+        const fullMessage = `✨ *طلب جديد - PROMNADE* ✨%0A%0A📦 *الأصناف:* ${itemsList}%0A%0A💵 *الإجمالي:* ${total} EGP%0A%0A👤 *العميل:* ${name}%0A🏠 *العنوان:* عمارة ${build} | دور ${floor} | شقة ${flat}%0A📞 *هاتف:* ${phone}`;
+        
+        window.open(`https://wa.me/201558124828?text=${fullMessage}`, '_blank');
     }
 </script>
 </body>
-    </html>
+</html>
