@@ -6,74 +6,87 @@
     <title>PROMNADE CAFE | VIP Market</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #d4af37; --black: #080808; --card-bg: #151515; --gray: #888; }
-        body { background-color: var(--black); color: white; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 120px; }
+        :root { --gold: #d4af37; --black: #080808; --card-bg: #1a1a1a; --gray: #aaa; }
+        body { background-color: var(--black); color: white; font-family: 'Cairo', sans-serif; margin: 0; overflow-x: hidden; padding-bottom: 140px; }
         
-        /* شاشة دخول VIP */
-        #welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #1a1a1a, #000); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
-        .logo-box { font-size: 3rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); text-align: center; line-height: 1.2; }
-        .enter-btn { padding: 15px 70px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-size: 1.4rem; font-weight: bold; cursor: pointer; border-radius: 50px; margin-top: 30px; transition: 0.5s; }
-        .enter-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 40px var(--gold); }
+        /* الهيدر والعنوان */
+        header { text-align: center; padding: 40px 20px; background: linear-gradient(to bottom, #151515, transparent); border-bottom: 1px solid #222; }
+        .brand-name { font-size: 3rem; font-weight: 900; color: var(--gold); margin: 0; letter-spacing: 2px; }
+        .location-tag { color: var(--gray); font-size: 1.1rem; margin-top: 5px; }
+        .location-tag b { color: var(--gold); }
 
-        header { text-align: center; padding: 50px 20px; background: linear-gradient(180deg, #111, transparent); }
-        .section-title { border-right: 5px solid var(--gold); padding-right: 15px; margin: 40px 20px 20px; font-size: 1.6rem; color: var(--gold); font-weight: 900; }
+        /* تنسيق الشبكة العريضة */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        .section-title { border-right: 6px solid var(--gold); padding-right: 15px; margin: 50px 0 25px; font-size: 1.8rem; color: var(--gold); font-weight: 900; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 25px; padding: 0 25px; }
-        .card { background: var(--card-bg); border-radius: 15px; padding: 15px; text-align: center; border: 1px solid #222; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; }
-        .card:hover { border-color: var(--gold); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
         
-        /* تنسيق صور المنتجات */
-        .item-img { width: 100%; height: 130px; object-fit: cover; border-radius: 10px; margin-bottom: 12px; border: 1px solid #333; }
+        /* كارت المنتج المطور */
+        .card { background: var(--card-bg); border-radius: 15px; padding: 15px; text-align: center; border: 1px solid #333; transition: 0.3s ease-in-out; display: flex; flex-direction: column; }
+        .card:hover { border-color: var(--gold); transform: translateY(-8px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
         
-        .item-name { font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; height: 50px; display: flex; align-items: center; justify-content: center; }
-        .price { color: var(--gold); font-weight: 900; font-size: 1.3rem; margin-bottom: 15px; display: block; }
-        .unavailable { color: #555; font-size: 0.9rem; margin-top: 10px; font-weight: bold; }
+        .item-img { width: 100%; height: 160px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; background: #222; }
+        .item-name { font-weight: 700; font-size: 1.2rem; margin-bottom: 8px; height: 55px; display: flex; align-items: center; justify-content: center; }
+        .price { color: var(--gold); font-weight: 900; font-size: 1.4rem; margin-bottom: 15px; }
+        .unavailable { color: #555; font-size: 0.9rem; padding: 20px 0; font-weight: bold; }
 
-        .qty-box { display: flex; align-items: center; justify-content: center; gap: 15px; background: #000; border-radius: 8px; padding: 8px; }
-        .qty-btn { background: var(--gold); border: none; color: black; width: 30px; height: 30px; border-radius: 5px; font-weight: 900; font-size: 1.2rem; cursor: pointer; }
-        .qty-val { font-weight: bold; font-size: 1.1rem; min-width: 25px; }
+        /* التحكم بالكمية */
+        .qty-box { display: flex; align-items: center; justify-content: space-between; background: #000; border-radius: 10px; padding: 5px 15px; border: 1px solid #333; }
+        .qty-btn { background: var(--gold); border: none; color: black; width: 35px; height: 35px; border-radius: 8px; font-weight: 900; font-size: 1.4rem; cursor: pointer; }
+        .qty-val { font-weight: 900; font-size: 1.2rem; color: white; }
 
-        .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; padding: 15px 25px; border-top: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-sizing: border-box; }
-        .total-amount { font-size: 1.8rem; font-weight: 900; color: var(--gold); }
-        .order-trigger { background: var(--gold); color: black; padding: 12px 35px; border-radius: 10px; font-weight: 900; border: none; cursor: pointer; font-size: 1.2rem; }
+        /* بار الحساب السفلي */
+        .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #0f0f0f; padding: 20px 40px; border-top: 3px solid var(--gold); display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-sizing: border-box; box-shadow: 0 -10px 30px rgba(0,0,0,0.8); }
+        .total-info { line-height: 1.4; }
+        .delivery-text { font-size: 0.9rem; color: #00ff44; font-weight: bold; }
+        .total-amount { font-size: 2rem; font-weight: 900; color: var(--gold); }
+        .order-trigger { background: var(--gold); color: black; padding: 15px 45px; border-radius: 12px; font-weight: 900; border: none; cursor: pointer; font-size: 1.3rem; transition: 0.3s; }
+        .order-trigger:hover { background: white; transform: scale(1.05); }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: #111; padding: 25px; border-radius: 20px; border: 1px solid var(--gold); width: 100%; max-width: 400px; box-sizing: border-box; }
-        input { width: 100%; padding: 14px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; font-family: 'Cairo'; outline: none; box-sizing: border-box; }
+        /* مودال العنوان */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #151515; padding: 30px; border-radius: 25px; border: 2px solid var(--gold); width: 100%; max-width: 450px; text-align: center; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 10px; font-family: 'Cairo'; font-size: 1rem; box-sizing: border-box; }
+        input:focus { border-color: var(--gold); outline: none; }
+
+        @media (max-width: 600px) {
+            .brand-name { font-size: 2rem; }
+            .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .item-img { height: 120px; }
+            .cart-bar { padding: 15px; flex-direction: column; gap: 15px; }
+            .order-trigger { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
-<div id="welcome-screen">
-    <div class="logo-box">PROMNADE CAFE<br><span style="font-size: 1.5rem; letter-spacing: 5px; color: white;">MARKET</span></div>
-    <button class="enter-btn" onclick="document.getElementById('welcome-screen').style.display='none'">دخول المتجر</button>
-</div>
-
 <header>
-    <h1 style="color: var(--gold); margin:0; font-size: 2.5rem;">PROMNADE</h1>
-    <p style="color: var(--gray); font-size: 1.1rem;">أسعار اليوم المحدثة - VIP Service</p>
+    <h1 class="brand-name">PROMNADE CAFE</h1>
+    <p class="location-tag">📍 <b>الشيخ زايد</b> - بجوار الخمائل</p>
 </header>
 
-<div class="section-title">🥦 الخضروات</div>
-<div class="grid" id="veg-grid"></div>
+<div class="container">
+    <div class="section-title">🥦 قسم الخضروات المجهزة</div>
+    <div class="grid" id="veg-grid"></div>
 
-<div class="section-title">🍎 الفاكهة</div>
-<div class="grid" id="fruit-grid"></div>
+    <div class="section-title">🍎 فاكهة الموسم الطازجة</div>
+    <div class="grid" id="fruit-grid"></div>
 
-<div class="section-title">🥤 ماركت وكافيه</div>
-<div class="grid" id="market-grid"></div>
+    <div class="section-title">🥤 الماركت والكافيه</div>
+    <div class="grid" id="market-grid"></div>
+</div>
 
 <div class="cart-bar">
-    <div>
-        <span style="font-size: 0.9rem; color: var(--gray);">إجمالي الفاتورة:</span><br>
-        <span class="total-amount" id="total-val">0 EGP</span>
+    <div class="total-info">
+        <span class="delivery-text">توصيل: 5ج (مضاف)</span><br>
+        <span class="total-amount" id="total-val">5 EGP</span>
     </div>
-    <button class="order-trigger" onclick="openOrderModal()">طلب الاوردر 📥</button>
+    <button class="order-trigger" onclick="openOrderModal()">تأكيد الطلب الآن ✨</button>
 </div>
 
 <div class="modal" id="orderModal">
     <div class="modal-content">
-        <h3 style="color:var(--gold); text-align:center; margin-top:0;">تفاصيل التوصيل 🛵</h3>
+        <h2 style="color:var(--gold); margin-bottom:20px;">بيانات التوصيل 🛵</h2>
         <input type="text" id="cust-name" placeholder="الاسم بالكامل">
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
             <input type="number" id="cust-build" placeholder="عمارة">
@@ -81,48 +94,52 @@
             <input type="number" id="cust-flat" placeholder="شقة">
         </div>
         <input type="text" id="cust-phone" placeholder="رقم الموبايل">
-        <button style="width:100%; background:var(--gold); color:black; padding:16px; border:none; border-radius:10px; font-weight:900; margin-top:20px; cursor:pointer;" onclick="sendToWhatsApp()">تأكيد وإرسال ✅</button>
-        <button style="width:100%; background:none; color:var(--gray); border:none; margin-top:10px; cursor:pointer;" onclick="document.getElementById('orderModal').style.display='none'">إلغاء</button>
+        <button style="width:100%; background:var(--gold); color:black; padding:18px; border:none; border-radius:12px; font-weight:900; margin-top:20px; cursor:pointer; font-size: 1.2rem;" onclick="sendToWhatsApp()">إرسال للواتساب ✅</button>
+        <button style="width:100%; background:none; color:var(--gray); border:none; margin-top:15px; cursor:pointer;" onclick="document.getElementById('orderModal').style.display='none'">إلغاء</button>
     </div>
 </div>
 
 <script>
-    // بيانات المنتجات مع صور حقيقية
+    const deliveryFee = 5;
+    
     const vegetables = [
-        {name:"طماطم", price:30, img: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&q=80"},
-        {name:"بصل ابيض", price:17.5, img: "https://images.unsplash.com/photo-1580013759032-c96505e24c1f?w=400&q=80"},
-        {name:"بصل احمر", price:20, img: "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=400&q=80"},
-        {name:"بطاطس تحمير", price:20, img: "https://images.unsplash.com/photo-1518977676601-b53f02bad675?w=400&q=80"},
-        {name:"خيار", price:25, img: "https://images.unsplash.com/photo-1449333254714-23ee85ff47ed?w=400&q=80"},
-        {name:"جزر", price:25, img: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&q=80"},
-        {name:"ثوم مفصص (½ كيلو)", price:45, img: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?w=400&q=80"},
-        {name:"فلفل الوان", price:70, img: "https://images.unsplash.com/photo-1563565375-f3fdfdbfeb83?w=400&q=80"},
-        {name:"ليمون", price:40, img: "https://images.unsplash.com/photo-1590505682634-ad216644ef23?w=400&q=80"},
-        {name:"كوسة", price:30, img: "https://images.unsplash.com/photo-1599307767316-776533da941c?w=400&q=80"},
-        {name:"كابوتشا", price:15, img: "https://images.unsplash.com/photo-1622206141846-38435d88308d?w=400&q=80"},
-        {name:"بسلة بالجزر", price:45, img: "https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=400&q=80"},
-        {name:"½ باذنجان متقور", price:45, img: "https://images.unsplash.com/photo-1628554270682-5369679f115d?w=400&q=80"},
-        {name:"طبق مشروم", price:45, img: "https://images.unsplash.com/photo-1534450539334-998864771696?w=400&q=80"}
+        {name:"طماطم", price:30, img: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400"},
+        {name:"بصل ابيض", price:17.5, img: "https://images.unsplash.com/photo-1580013759032-c96505e24c1f?w=400"},
+        {name:"بصل احمر", price:20, img: "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=400"},
+        {name:"بطاطس تحمير", price:20, img: "https://images.unsplash.com/photo-1518977676601-b53f02bad675?w=400"},
+        {name:"خيار", price:25, img: "https://images.unsplash.com/photo-1449333254714-23ee85ff47ed?w=400"},
+        {name:"جزر", price:25, img: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400"},
+        {name:"ثوم مفصص (½ كيلو)", price:45, img: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?w=400"},
+        {name:"فلفل الوان", price:70, img: "https://images.unsplash.com/photo-1563565375-f3fdfdbfeb83?w=400"},
+        {name:"فلفل رومى", price:45, img: "https://images.unsplash.com/photo-1594213110243-7f722359ba7c?w=400"},
+        {name:"فلفل حامى", price:40, img: "https://images.unsplash.com/photo-1588253510218-472d82999086?w=400"},
+        {name:"ليمون", price:40, img: "https://images.unsplash.com/photo-1590505682634-ad216644ef23?w=400"},
+        {name:"كوسة", price:30, img: "https://images.unsplash.com/photo-1599307767316-776533da941c?w=400"},
+        {name:"بسلة بالجزر", price:45, img: "https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=400"},
+        {name:"½ باذنجان متقور", price:45, img: "https://images.unsplash.com/photo-1628554270682-5369679f115d?w=400"},
+        {name:"شوربة خضار", price:35, img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400"},
+        {name:"سبانخ", price:0, img: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400"},
+        {name:"بنجر", price:0, img: "https://images.unsplash.com/photo-1593105544230-cd02d07bb27a?w=400"}
     ];
 
     const fruits = [
-        {name:"تفاح احمر سكرى", price:75, img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?w=400&q=80"},
-        {name:"موز", price:35, img: "https://images.unsplash.com/photo-1571771894821-ad9b58866602?w=400&q=80"},
-        {name:"يوسفى موركت", price:25, img: "https://images.unsplash.com/photo-1557800636-894a64c1696f?w=400&q=80"},
-        {name:"فراولة", price:35, img: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=400&q=80"},
-        {name:"كنتلوب", price:35, img: "https://images.unsplash.com/photo-1573246123716-6b17826f7ad2?w=400&q=80"},
-        {name:"جوافة سكرى", price:30, img: "https://images.unsplash.com/photo-1614332287897-cdc485fa562d?w=400&q=80"},
-        {name:"برتقال بصرة", price:25, img: "https://images.unsplash.com/photo-1547514701-42782101795e?w=400&q=80"}
+        {name:"تفاح احمر سكرى", price:75, img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?w=400"},
+        {name:"موز", price:35, img: "https://images.unsplash.com/photo-1571771894821-ad9b58866602?w=400"},
+        {name:"يوسفى موركت", price:25, img: "https://images.unsplash.com/photo-1557800636-894a64c1696f?w=400"},
+        {name:"فراولة", price:35, img: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=400"},
+        {name:"جوافة سكرى", price:30, img: "https://images.unsplash.com/photo-1614332287897-cdc485fa562d?w=400"},
+        {name:"برتقال بصرة", price:25, img: "https://images.unsplash.com/photo-1547514701-42782101795e?w=400"}
     ];
 
     const marketCafe = [
-        {name:"V Cola (في كولا)", price:25, img: "https://images.unsplash.com/photo-1622483767028-3f66f344556c?w=400&q=80"},
-        {name:"مياه معدنية", price:10, img: "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&q=80"},
-        {name:"لبن جهينة (1 لتر)", price:45, img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=80"},
-        {name:"ايس كريم اوريو", price:25, img: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80"},
-        {name:"أرز معبأ (1 كيلو)", price:35, img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&q=80"},
-        {name:"قهوة تركي", price:35, img: "https://images.unsplash.com/photo-1541167760496-162955ed8a9f?w=400&q=80"},
-        {name:"شيبسي عائلي", price:15, img: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&q=80"}
+        {name:"V Cola (في كولا)", price:25, img: "https://images.unsplash.com/photo-1622483767028-3f66f344556c?w=400"},
+        {name:"مياه معدنية", price:10, img: "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400"},
+        {name:"لبن جهينة (1 لتر)", price:45, img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400"},
+        {name:"أرز معبأ (1 كيلو)", price:35, img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400"},
+        {name:"ايس كريم اوريو", price:25, img: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400"},
+        {name:"ايس كريم ميجا", price:25, img: "https://images.unsplash.com/photo-1561845730-2283999114d7?w=400"},
+        {name:"قهوة تركي", price:35, img: "https://images.unsplash.com/photo-1541167760496-162955ed8a9f?w=400"},
+        {name:"شاي عراقي", price:15, img: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400"}
     ];
 
     let cart = {}; let total = 0;
@@ -134,7 +151,7 @@
             let content = `<img src="${item.img}" class="item-img" alt="${item.name}"><span class="item-name">${item.name}</span>`;
             if(item.price > 0) {
                 content += `<span class="price">${item.price} ج</span><div class="qty-box"><button class="qty-btn" onclick="updateQty('${item.name}', -1, ${item.price})">-</button><span id="q-${item.name}" class="qty-val">0</span><button class="qty-btn" onclick="updateQty('${item.name}', 1, ${item.price})">+</button></div>`;
-            } else { content += `<span class="unavailable">غير متوفر</span>`; }
+            } else { content += `<span class="unavailable">غير متوفر اليوم</span>`; }
             card.innerHTML = content; container.appendChild(card);
         });
     }
@@ -148,8 +165,9 @@
     }
 
     function calculateTotal() {
-        total = 0; for(let k in cart) total += cart[k].qty * cart[k].price;
-        document.getElementById('total-val').innerText = total + " EGP";
+        let subtotal = 0; for(let k in cart) subtotal += cart[k].qty * cart[k].price;
+        total = subtotal > 0 ? subtotal + deliveryFee : 0;
+        document.getElementById('total-val').innerText = (subtotal > 0 ? total : 0) + " EGP";
     }
 
     function openOrderModal() { if(total === 0) return alert("سلتك فارغة!"); document.getElementById('orderModal').style.display = 'flex'; }
@@ -158,7 +176,7 @@
         const n = document.getElementById('cust-name').value, b = document.getElementById('cust-build').value, f = document.getElementById('cust-floor').value, s = document.getElementById('cust-flat').value, p = document.getElementById('cust-phone').value;
         if(!n || !b || !f || !s) return alert("يرجى إكمال بيانات العنوان!");
         let itemsList = ""; for(let k in cart) if(cart[k].qty > 0) itemsList += `%0A- ${k} (${cart[k].qty})`;
-        const fullMsg = `✨ *طلب جديد من PROMNADE* ✨%0A%0A📦 *الأصناف:* ${itemsList}%0A%0A💵 *الإجمالي:* ${total} EGP%0A%0A👤 *العميل:* ${n}%0A🏠 *العنوان:* عمارة ${b} | دور ${f} | شقة ${s}%0A📞 *هاتف:* ${p}`;
+        const fullMsg = `✨ *طلب جديد - PROMNADE* ✨%0A%0A📦 *الأصناف:* ${itemsList}%0A%0A💵 *الإجمالي + التوصيل:* ${total} EGP%0A%0A👤 *العميل:* ${n}%0A🏠 *العنوان:* عمارة ${b} | دور ${f} | شقة ${s}%0A📍 *الموقع:* الشيخ زايد - بجوار الخمائل%0A📞 *هاتف:* ${p}`;
         window.open(`https://wa.me/201558124828?text=${fullMsg}`);
     }
 </script>
